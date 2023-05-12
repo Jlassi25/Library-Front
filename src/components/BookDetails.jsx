@@ -1,10 +1,40 @@
-import { useParams } from "react-router-dom"
+import { useParams,useNavigate  } from "react-router-dom"
 import useFetch from "../Hooks/useFetch";
+import { Button,Flex,Stack } from '@chakra-ui/react'
+import { useToast } from '@chakra-ui/react'
+
+import axios from 'axios';
+
 
 const BookDetails = () => {
     const { id } = useParams()
     const {data:book,err,ispending} = useFetch("http://localhost:8080/book/"+id)
-    console.log(book && book);
+    const navigate = useNavigate();
+    const toast = useToast()
+
+    const handleDelete =()=>{
+        axios.delete("http://localhost:8080/book/"+id)
+        .then( ()=>{
+            navigate(-1);
+            toast({
+                title: 'Book Deleted.',
+                description: "Book has been deleted successfully!",
+                status: 'success',
+                duration: 3000,
+                isClosable: true,
+              })
+        })
+        .catch(error=>{
+            toast({
+                title: 'Server Error.',
+                description: "Error:"+error,
+                status: 'error',
+                duration: 3000,
+                isClosable: true,
+              })
+        })
+        }
+    
     return ( 
 
     <>
@@ -25,12 +55,19 @@ const BookDetails = () => {
                 <span className="interests_item">Management</span>
                 <span className="interests_item">Leadership</span>
             </div>
+       
             </div>
+            
         </section>
         
         }
-
-   
+      <Flex justify="center " >
+                <Stack direction="row" spacing={4}> 
+                    <Button variant='outline'  colorScheme='green'>Borrow To</Button>
+                    <Button variant='outline'  colorScheme='red' onClick={handleDelete}>Delete</Button>
+                </Stack>
+            </Flex>  
+     
     </>
 
      );

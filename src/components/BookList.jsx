@@ -1,5 +1,5 @@
 
-
+import { Link } from 'react-router-dom';
 const BookList = ({books}) => {
 
 
@@ -16,6 +16,7 @@ const BookList = ({books}) => {
     <div id="list-th">
     { books.map((book) => (
       <div className="book read"  key={book.isbn}>
+        <Link to={`/book/${book.isbn}`}>
         <div className="cover">
           <img src="https://alysbcohen.files.wordpress.com/2015/01/little-princess-book-cover.jpg" alt="rr" />
         </div>
@@ -23,6 +24,7 @@ const BookList = ({books}) => {
           <p className="title">{book.title}<br />
             <span className="author">{book.author}</span></p>
         </div>
+        </Link>
       </div>
         ))}
     </div>
