@@ -9,7 +9,7 @@ import {
     AlertDialogHeader,
     AlertDialogContent,
     AlertDialogOverlay,
-    AlertDialogCloseButton,
+    Spinner,
     useDisclosure
 } from '@chakra-ui/react'
 import { useRef } from 'react';
@@ -51,7 +51,9 @@ const BookDetails = () => {
     return (
 
         <>
-            {ispending && <div>Loading...</div>}
+       {ispending && <Flex justify="center" marginTop={200}>
+        <Spinner thickness='4px' speed='0.65s'  emptyColor='gray.200' color='green.500' size='xl'/>
+      </Flex>}
             {err && <div>{err}</div>}
             {book &&
                 <section className="profile_container">

@@ -20,10 +20,20 @@ import {
 import { Flex, Spinner } from '@chakra-ui/react'
 import { SimpleGrid, CardFooter, CardBody, Card, Heading, CardHeader, Text, Button } from '@chakra-ui/react';
 import { useEffect, useState } from "react";
+import { HandlePostRequest } from "../Helpers/HandlePostRequest";
 
 const Category = () => {
   const { data, ispending, err } = useFetch("http://localhost:8080/category")
   const [categories, setCategories] = useState(data);
+
+  // const [title, setTitle] = useState("");
+  // const [description, setDescription] = useState("")
+  const [formData, setFormData] = useState({
+    title: '',
+    description: ''
+  });
+
+
   const { isOpen, onOpen, onClose } = useDisclosure()
 
   const initialRef = useRef(null)
@@ -61,6 +71,39 @@ const Category = () => {
         })
       })
   }
+
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const newCategory = await HandlePostRequest("http://localhost:8080/category", formData);
+      setCategories([...categories, newCategory]);
+      onClose();
+
+      setFormData({
+        title: '',
+        description: ''
+      });
+      toast({
+        title: 'Category Added.',
+        description: `Category ${formData.title} has been added successfully!`,
+        status: 'success',
+        duration: 3000,
+        isClosable: true,
+      })
+    } catch (err) {
+      toast({
+        title: 'Server Error.',
+        description: "Error:" + err,
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
+      })
+   
+    }
+
+  }
   return (
     <>
       <h1> A list of Categories</h1>
@@ -71,7 +114,7 @@ const Category = () => {
       }
       {err && <div>{err.message}</div>}
       <Flex justify="flex-end" m="30">
-        <Button colorScheme='teal' onClick={onOpen}>New Category <FaPlus style={{ marginLeft: '8px' }}/></Button>
+        <Button colorScheme='teal' onClick={onOpen}>New Category <FaPlus style={{ marginLeft: '8px' }} /></Button>
       </Flex>
 
       <Flex direction="column" m="100">
@@ -114,26 +157,29 @@ const Category = () => {
       >
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>New Category</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody pb={6}>
-            <FormControl>
-              <FormLabel>Title</FormLabel>
-              <Input ref={initialRef} placeholder='Title' />
-            </FormControl>
+          <form onSubmit={handleSubmit}>
+            <ModalHeader>New Category</ModalHeader>
+            <ModalCloseButton onClick={() => setFormData({ title: '', description: '' })} />
+            <ModalBody pb={6}>
 
-            <FormControl mt={4}>
-              <FormLabel>Description</FormLabel>
-              <Textarea placeholder='Here is a sample description' />
-            </FormControl>
-          </ModalBody>
+              <FormControl>
+                <FormLabel>Title</FormLabel>
+                <Input value={formData.title} onChange={(event) => setFormData({ ...formData, title: event.target.value })} placeholder='Title' />
+              </FormControl>
 
-          <ModalFooter>
-            <Button colorScheme='blue' mr={3}>
-              Save
-            </Button>
-            <Button onClick={onClose}>Cancel</Button>
-          </ModalFooter>
+              <FormControl mt={4}>
+                <FormLabel>Description</FormLabel>
+                <Textarea value={formData.description} onChange={(event) => setFormData({ ...formData, description: event.target.value })} placeholder='Here is a sample description' />
+              </FormControl>
+            </ModalBody>
+
+            <ModalFooter>
+              <Button type="submit" colorScheme='blue' mr={3}>
+                Save
+              </Button>
+              <Button onClick={() => { onClose(); setFormData({ title: '', description: '' }); }}>Cancel</Button>
+            </ModalFooter>
+          </form>
         </ModalContent>
       </Modal>
 
