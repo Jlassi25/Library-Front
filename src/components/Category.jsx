@@ -26,8 +26,7 @@ const Category = () => {
   const { data, ispending, err } = useFetch("http://localhost:8080/category")
   const [categories, setCategories] = useState(data);
 
-  // const [title, setTitle] = useState("");
-  // const [description, setDescription] = useState("")
+  const [searchTerm, setSearchTerm] = useState("")
   const [formData, setFormData] = useState({
     title: '',
     description: ''
@@ -100,10 +99,13 @@ const Category = () => {
         duration: 3000,
         isClosable: true,
       })
-   
+
     }
 
   }
+  const filteredCategories = categories ? categories.filter((cat) =>
+    cat.title.toLowerCase().includes(searchTerm.toLowerCase())
+  ) : categories;
   return (
     <>
       <h1> A list of Categories</h1>
@@ -113,7 +115,9 @@ const Category = () => {
         </Flex>
       }
       {err && <div>{err.message}</div>}
-      <Flex justify="flex-end" m="30">
+      <Flex justify="space-between" m="30">
+
+        <Input type="text" placeholder="Search Category" variant='outline' value={searchTerm} onChange={(event) => setSearchTerm(event.target.value)} htmlSize={30} width='auto' />
         <Button colorScheme='teal' onClick={onOpen}>New Category <FaPlus style={{ marginLeft: '8px' }} /></Button>
       </Flex>
 
@@ -121,7 +125,7 @@ const Category = () => {
 
         <SimpleGrid spacing={20} templateColumns='repeat(auto-fill, minmax(230px, 1fr))'>
 
-          {categories && categories.map((category) => (
+          {filteredCategories && filteredCategories.map((category) => (
             <Card key={category.catId}>
               <CardHeader  >
                 <Heading size='md'>{category.title}</Heading>
