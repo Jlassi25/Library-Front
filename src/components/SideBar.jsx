@@ -34,10 +34,10 @@ const SideBar = () => {
             </Link>
           </li>
           <li>
-            <a className="nav-link" href="home">
+            <Link className="nav-link" to="/borrow">
               <i className="nc-icon nc-check-2" />
-              <p>Validate competitions</p>
-            </a>
+              <p>Manage Borrwing</p>
+            </Link>
           </li>
           <li className="nav-item active active-pro">
             <a className="nav-link active" href="home">
