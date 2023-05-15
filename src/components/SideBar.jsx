@@ -2,8 +2,14 @@ import { Link } from 'react-router-dom';
 
 
 const SideBar = () => {
+  const token = localStorage.getItem('token');
+
+  const navStyles = {
+    display: token ? 'block' : 'none',
+  };
+
   return (
-    <div className="sidebar" data-image="../assets/img/comp.png">
+    <div className="sidebar"  data-image="../assets/img/comp.png">
       {/*
     coolers li staamalt'hom https://coolors.co/palette/d8f3dc-b7e4c7-95d5b2-74c69d-52b788-40916c-2d6a4f-1b4332-081c15
   badal mel image-data tag 
@@ -14,9 +20,9 @@ const SideBar = () => {
             <img alt="yes" src="../assets/img/logoEntet.png" height="50px" />
           </a>
         </div>
-        <ul className="nav">
+        <ul className="nav"   style={navStyles}>
           <li className="nav-item active">
-            <Link className="nav-link" to="/">
+            <Link  className="nav-link" to="/">
               <i className="nc-icon nc-icon nc-tv-2" />
               <p>Home</p>
             </Link>

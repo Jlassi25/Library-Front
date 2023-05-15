@@ -35,7 +35,11 @@ const BookList = ({ books }) => {
     author: '',
     category:{}
   });
-
+  useEffect(() => {
+    if (cats) {
+      setBookList(cats);
+    }
+  }, [cats]);
 
 
   const { isOpen, onOpen, onClose } = useDisclosure()
@@ -53,8 +57,8 @@ const BookList = ({ books }) => {
     try {
       
       const newBook = await HandlePostRequest("http://localhost:8080/book", formData);
-    
-      setBookList([...bookList, newBook]);
+      console.log("thisone ",newBook.data)
+      setBookList([...bookList, newBook.data]);
       
       onClose();
 
@@ -92,7 +96,7 @@ const BookList = ({ books }) => {
           <h1> A list of books</h1>
           <Flex justify="space-between" m="30">
 
-            <Input type="text" placeholder="Search Category" variant='outline' value={searchTerm} onChange={(event) => setSearchTerm(event.target.value)} htmlSize={30} width='auto' />
+            <Input type="text" placeholder="Search Book" variant='outline' value={searchTerm} onChange={(event) => setSearchTerm(event.target.value)} htmlSize={30} width='auto' />
             <Button colorScheme='teal' onClick={onOpen}>New Category <FaPlus style={{ marginLeft: '8px' }} /></Button>
           </Flex>
           <br />

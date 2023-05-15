@@ -10,6 +10,7 @@ const useFetch=(url)=>{
 
     useEffect(() => {
         const source = axios.CancelToken.source();
+        console.log("use effect works")
         
         axios.get(url, { cancelToken: source.token })
           .then(response => {

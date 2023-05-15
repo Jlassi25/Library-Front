@@ -1,3 +1,4 @@
+import { Hoc } from "../HOC/hoc";
 import useFetch from "../Hooks/useFetch";
 import BookList from "./BookList";
 import { Flex, Spinner } from '@chakra-ui/react'
@@ -17,4 +18,4 @@ const Book = () => {
      );
 }
  
-export default Book;
+export default Hoc(Book) ;

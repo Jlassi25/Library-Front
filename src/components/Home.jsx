@@ -1,3 +1,4 @@
+import { Hoc } from "../HOC/hoc";
 
 
 const Home = () => {
@@ -109,4 +110,4 @@ const Home = () => {
   );
 }
 
-export default Home;
+export default Hoc(Home) ;

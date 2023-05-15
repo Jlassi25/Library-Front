@@ -1,3 +1,5 @@
+import { Hoc } from "../HOC/hoc";
+
 const ManageBooking = () => {
     return ( 
         <>
@@ -67,4 +69,4 @@ const ManageBooking = () => {
      
 }
  
-export default ManageBooking;
+export default Hoc(ManageBooking) ;

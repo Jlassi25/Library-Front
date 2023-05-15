@@ -4,7 +4,9 @@ export const HandlePostRequest = async (url,data) => {
     console.log(data);
         try{
             const response = await axios.post(url,data);
+            console.log(response);
             return response;
+          
         }catch(err){
             throw new Error("Server error :" +err);
         }
