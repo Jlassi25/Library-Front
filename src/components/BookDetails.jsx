@@ -15,6 +15,7 @@ import {
 import { useRef } from 'react';
 
 import axios from 'axios';
+import { Hoc } from "../HOC/hoc";
 
 
 const BookDetails = () => {
@@ -120,4 +121,4 @@ const BookDetails = () => {
     );
 }
 
-export default BookDetails;
+export default Hoc(BookDetails) ;

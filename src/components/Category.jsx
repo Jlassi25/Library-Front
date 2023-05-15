@@ -21,9 +21,11 @@ import { Flex, Spinner } from '@chakra-ui/react'
 import { SimpleGrid, CardFooter, CardBody, Card, Heading, CardHeader, Text, Button } from '@chakra-ui/react';
 import { useEffect, useState } from "react";
 import { HandlePostRequest } from "../Helpers/HandlePostRequest";
+import { Hoc } from "../HOC/hoc";
 
 const Category = () => {
   const { data, ispending, err } = useFetch("http://localhost:8080/category")
+  console.log(data);
   const [categories, setCategories] = useState(data);
 
   const [searchTerm, setSearchTerm] = useState("")
@@ -194,4 +196,4 @@ const Category = () => {
   );
 }
 
-export default Category;
+export default Hoc(Category) ;

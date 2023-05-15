@@ -1,5 +1,7 @@
 import { Link } from "react-router-dom";
 import useFetch from "../Hooks/useFetch";
+import { Hoc } from "../HOC/hoc";
+
 
 const Home = () => {
   const {data:nbrBook} = useFetch("http://localhost:8080/book");
@@ -137,4 +139,4 @@ const Home = () => {
   );
 }
 
-export default Home;
+export default Hoc(Home) ;

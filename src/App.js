@@ -10,27 +10,31 @@ import NavBar from './components/NavBar';
 import SideBar from './components/SideBar';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Subscribers from './components/Subscribers';
+import Login from './components/Login';
+
 
 function App() {
   return (
     <Router>
-    <div className="wrapper">
-        <SideBar/>
+      <div className="wrapper">
+          <SideBar />
         <div className="main-panel">
-          <NavBar/>
+          <NavBar />
           <div className="content">
-          <Routes>
-            <Route exact path="/" element={<Home />} />
-            <Route path="/book" element={<Book />}  />
-            <Route path="/category" element={<Category />}  />
-            <Route path="/borrow" element={<ManageBooking />}  />
-            <Route path="/subscriber" element={<Subscribers />}  />
-            <Route path="/book/:id" element={<BookDetails />}  />
-          </Routes>
+            <Routes>
+              <Route exact path="/" element={<Home />} />
+              <Route exact path="/book" element={<Book />} />
+              <Route path="/category" element={<Category />} />
+              <Route path="/borrow" element={<ManageBooking />} />
+              <Route path="/subscriber" element={<Subscribers />} />
+              <Route path="/book/:id" element={<BookDetails />} />
+              <Route path="/login" element={<Login />} />
+            </Routes>
           </div>
-         <Footer/>
+          <Footer />
         </div>
-    </div>
+      </div>
+
     </Router>
   );
 }

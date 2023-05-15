@@ -3,6 +3,8 @@ import { Flex, Spinner, useToast, Select, Button, Input } from '@chakra-ui/react
 import axios from "axios";
 import { FaPlus } from 'react-icons/fa';
 import { HandlePostRequest } from "../Helpers/HandlePostRequest";
+import { Hoc } from "../HOC/hoc";
+
 const ManageBooking = () => {
 
   const [borrowed, setBorrowed] = useState([]);
@@ -242,4 +244,6 @@ const ManageBooking = () => {
 
 }
 
-export default ManageBooking;
+
+ 
+export default Hoc(ManageBooking) ;
