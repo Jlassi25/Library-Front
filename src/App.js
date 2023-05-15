@@ -9,6 +9,7 @@ import ManageBooking from './components/Managebooking';
 import NavBar from './components/NavBar';
 import SideBar from './components/SideBar';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import Subscribers from './components/Subscribers';
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
             <Route path="/book" element={<Book />}  />
             <Route path="/category" element={<Category />}  />
             <Route path="/borrow" element={<ManageBooking />}  />
+            <Route path="/subscriber" element={<Subscribers />}  />
             <Route path="/book/:id" element={<BookDetails />}  />
           </Routes>
           </div>

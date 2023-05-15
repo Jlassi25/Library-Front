@@ -1,5 +1,5 @@
 
-import { useState, useRef } from 'react';
+import { useState,useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { Input, Flex, Button } from '@chakra-ui/react';
 import { FaPlus } from 'react-icons/fa';
@@ -29,18 +29,18 @@ const BookList = ({ books }) => {
   const [searchTerm, setSearchTerm] = useState("")
   const { data: cats} = useFetch("http://localhost:8080/category")
   const [bookList, setBookList] = useState(books);
+
   const [formData, setFormData] = useState({
     title: '',
     author: '',
-    category: {"catId":-1}
+    category:{}
   });
 
-  const filteredBooks = bookList ? bookList.filter((book) =>
-    book.title && book.title.toLowerCase().includes(searchTerm.toLowerCase())
-  ) : bookList;
+
 
   const { isOpen, onOpen, onClose } = useDisclosure()
   const initialRef = useRef(null)
+
 
 
 
@@ -53,7 +53,9 @@ const BookList = ({ books }) => {
     try {
       
       const newBook = await HandlePostRequest("http://localhost:8080/book", formData);
+    
       setBookList([...bookList, newBook]);
+      
       onClose();
 
       setFormData({
@@ -80,6 +82,9 @@ const BookList = ({ books }) => {
     }
 
   }
+  const filteredBooks = bookList ? bookList.filter((book) =>
+  book.title && book.title.toLowerCase().includes(searchTerm.toLowerCase())
+) : bookList;
   return (
     <>
       <div id="large-th">
@@ -148,7 +153,7 @@ const BookList = ({ books }) => {
 
               <FormControl mt={4}>
                 <FormLabel>Category</FormLabel>
-                <AutoComplete openOnFocus onChange={(value) => setFormData({ ...formData,  category:{"catId":parseInt(value,10)} })}>
+                <AutoComplete openOnFocus onChange={(value) =>setFormData({ ...formData,  category: { ...formData.category, catId: parseInt(value,10) } })}>
                   <AutoCompleteInput variant="outline" placeholder='Select Category'   />
                   <AutoCompleteList>
       

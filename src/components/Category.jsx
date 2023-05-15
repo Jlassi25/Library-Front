@@ -44,6 +44,8 @@ const Category = () => {
       setCategories(data);
     }
   }, [data]);
+
+
   const handleDeleteCat = (id) => {
     console.log("Category id:", id);
     axios.delete("http://localhost:8080/category/" + id)
@@ -104,8 +106,9 @@ const Category = () => {
 
   }
   const filteredCategories = categories ? categories.filter((cat) =>
-    cat.title.toLowerCase().includes(searchTerm.toLowerCase())
-  ) : categories;
+    cat.title && cat.title.toLowerCase().includes( searchTerm.toLowerCase())
+  ):categories
+
   return (
     <>
       <h1> A list of Categories</h1>

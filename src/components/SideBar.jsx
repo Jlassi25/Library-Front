@@ -39,6 +39,12 @@ const SideBar = () => {
               <p>Manage Borrwing</p>
             </Link>
           </li>
+          <li>
+            <Link className="nav-link" to="/subscriber">
+              <i className="nc-icon nc-circle-09" />
+              <p>Manage Subscribers</p>
+            </Link>
+          </li>
           <li className="nav-item active active-pro">
             <a className="nav-link active" href="home">
               <i className="nc-icon nc-controller-modern" />
