@@ -1,6 +1,10 @@
-
+import { Link } from "react-router-dom";
+import useFetch from "../Hooks/useFetch";
 
 const Home = () => {
+  const {data:nbrBook} = useFetch("http://localhost:8080/book");
+  const {data:nbrSubs} = useFetch("http://localhost:8080/subscriber");
+  const {data:nbrBooked} = useFetch("http://localhost:8080/booking/booked");
   return (
     < >
       <div className="container-fluid">
@@ -29,10 +33,10 @@ const Home = () => {
                     <i className="nc-icon nc-icon nc-chart-bar-32" />
                   </div>
                   <p className="card-category" style={{ color: 'black' }}>
-                    Number of created competitions
+                    Number of Book
                   </p>
-                  <a className="nav-link" href="home">
-                    <h4 className="card-title"><b>43</b> competitions</h4>
+                  <a className="nav-link" href="/book">
+                    <h4 className="card-title text-center"><b>{nbrBook&&nbrBook.length}</b> Books</h4>
                   </a>
                 </div>
               </div>
@@ -44,15 +48,33 @@ const Home = () => {
                     <i className="nc-icon nc-icon nc-chart-pie-35" />
                   </div>
                   <p className="card-category" style={{ color: 'black' }}>
-                    Number of registred users
+                    Number of Subscriber
                   </p>
-                  <a className="nav-link" href="home">
-                    <h4 className="card-title"><b>20</b> users</h4>
+                  <a className="nav-link" href="/subscriber">
+                    <h4 className="card-title text-center"><b>{nbrSubs&&nbrSubs.length}</b> Subscribers</h4>
                   </a>
                 </div>
               </div>
             </div>
-            <div className="col-6 col-md-3" />
+
+
+            <div className="col-6 col-md-3 mt-5 d-flex justify-content-center align-items-center" />
+
+            <div className="col-6 col-md-12 d-flex justify-content-center align-items-center">
+              <div className="card card-stats">
+                <div className="card-header card-header-success card-header-icon" style={{ backgroundColor: '#d8f3dc' }}>
+                  <div className="card-icon">
+                    <i className="nc-icon nc-icon nc-chart-pie-35" />
+                  </div>
+                  <p className="card-category" style={{ color: 'black' }}>
+                    Number of Subscriber
+                  </p>
+                  <a className="nav-link" href="/subscriber">
+                    <h4 className="card-title text-center"><b>{nbrSubs&&nbrSubs.length}</b> </h4>
+                  </a>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -77,23 +99,29 @@ const Home = () => {
           <div className="row">
             <div className="col-6 col-md-4" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
               <div className="box-1">
+                <Link to="/category">
                 <div className="btnn btn-one">
-                  <span>Manage competitions</span>
+                  <span>Manage Category</span>
                 </div>
+                </Link>
               </div>
             </div>
             <div className="col-6 col-md-4" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
               <div className="box-1">
+                <Link to="/book">
                 <div className="btnn btn-one">
-                  <span>Validate competition</span>
+                  <span>Manage Book</span>
                 </div>
+                </Link>
               </div>
             </div>
             <div className="col-6 col-md-4" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
               <div className="box-1">
+                <Link to="/subscriber">
                 <div className="btnn btn-one">
-                  <span>Manage users</span>
+                  <span>Manage Subscribers</span>
                 </div>
+                </Link>
               </div>
             </div>
           </div>
