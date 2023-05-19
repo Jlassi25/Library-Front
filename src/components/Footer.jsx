@@ -10,7 +10,7 @@ const Footer = () => {
     </nav>
   </div>
 </footer>
-
+  //commentaire
      );
 }
  
