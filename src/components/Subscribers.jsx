@@ -42,7 +42,8 @@ const Subscribers = () => {
 
     const { data, ispending, err } =  useFetch("http://localhost:8080/subscriber")
 
-    const [subscribers,setSubscribers] = useState(data)
+    const [subscribers,setSubscribers] = useState(data);
+    const [searchTerm, setSearchTerm] = useState("")
     
   
     useEffect(() => {
@@ -137,6 +138,9 @@ const Subscribers = () => {
             })
           })
       }
+      const filteredSubs = subscribers ? subscribers.filter((sub) =>
+      sub.fname && sub.fname.toLowerCase().includes(searchTerm.toLowerCase())
+    ) : subscribers;
     return (
         <>
             <h1> Subscribers</h1>
@@ -150,20 +154,20 @@ const Subscribers = () => {
 
             <Flex justify="space-between" m="30">
 
-                <Input type="text" placeholder="Search Category" variant='outline' htmlSize={30} width='auto' />
+                <Input type="text" placeholder="Search Category" variant='outline' value={searchTerm} onChange={(event) => setSearchTerm(event.target.value)}  htmlSize={30} width='auto' />
                 <Button colorScheme='teal' onClick={onOpen} >New Subscriber <FaPlus style={{ marginLeft: '8px' }} /></Button>
             </Flex>
 
 
 
             <Flex wrap="wrap" justify="space-around">
-                {subscribers && subscribers.map((sub) => (
+                {filteredSubs && filteredSubs.map((sub) => (
                     <Box
                         key={sub.cin}
                         m={10}
                         maxW={'270px'}
                         w={'full'}
-                        bg={new Date(sub.expirationDate) > new Date() ? '#fdbfb5' : 'white'}
+                        bg={new Date(sub.expirationDate) < new Date() ? '#fdbfb5' : 'white'}
                         boxShadow={'2xl'}
                         rounded={'md'}
                         overflow={'hidden'}>

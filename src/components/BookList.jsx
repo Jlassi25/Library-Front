@@ -28,7 +28,8 @@ import {
 const BookList = ({ books }) => {
   const [searchTerm, setSearchTerm] = useState("")
   const { data: cats} = useFetch("http://localhost:8080/category")
-  const [bookList, setBookList] = useState(books);
+  const { data: boks} = useFetch("http://localhost:8080/book")
+  const [bookList, setBookList] = useState([]);
 
   const [formData, setFormData] = useState({
     title: '',
@@ -36,10 +37,10 @@ const BookList = ({ books }) => {
     category:{}
   });
   useEffect(() => {
-    if (cats) {
-      setBookList(cats);
+    if (boks) {
+      setBookList(boks);
     }
-  }, [cats]);
+  }, [boks]);
 
 
   const { isOpen, onOpen, onClose } = useDisclosure()

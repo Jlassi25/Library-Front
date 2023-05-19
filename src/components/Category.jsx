@@ -81,7 +81,7 @@ const Category = () => {
 
     try {
       const newCategory = await HandlePostRequest("http://localhost:8080/category", formData);
-      setCategories([...categories, newCategory]);
+      setCategories([...categories, newCategory.data]);
       onClose();
 
       setFormData({
