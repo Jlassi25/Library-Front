@@ -98,7 +98,7 @@ const BookList = ({ books }) => {
           <Flex justify="space-between" m="30">
 
             <Input type="text" placeholder="Search Book" variant='outline' value={searchTerm} onChange={(event) => setSearchTerm(event.target.value)} htmlSize={30} width='auto' />
-            <Button colorScheme='teal' onClick={onOpen}>New Category <FaPlus style={{ marginLeft: '8px' }} /></Button>
+            <Button colorScheme='teal' onClick={onOpen}>New Book <FaPlus style={{ marginLeft: '8px' }} /></Button>
           </Flex>
           <br />
 

@@ -90,8 +90,8 @@ const Subscribers = () => {
             description: ''
           });
           toast({
-            title: 'Category Added.',
-            description: `Category ${formData.title} has been added successfully!`,
+            title: 'Subscriber Added.',
+            description: `Subscriber ${formData.title} has been added successfully!`,
             status: 'success',
             duration: 3000,
             isClosable: true,
@@ -118,7 +118,7 @@ const Subscribers = () => {
           .then(() => {
     
             toast({
-              title: 'Category Deleted.',
+              title: 'Subscriber Deleted.',
               description: "Subscriber has been deleted successfully!",
               status: 'success',
               duration: 3000,
@@ -154,7 +154,7 @@ const Subscribers = () => {
 
             <Flex justify="space-between" m="30">
 
-                <Input type="text" placeholder="Search Category" variant='outline' value={searchTerm} onChange={(event) => setSearchTerm(event.target.value)}  htmlSize={30} width='auto' />
+                <Input type="text" placeholder="Search Subscriber" variant='outline' value={searchTerm} onChange={(event) => setSearchTerm(event.target.value)}  htmlSize={30} width='auto' />
                 <Button colorScheme='teal' onClick={onOpen} >New Subscriber <FaPlus style={{ marginLeft: '8px' }} /></Button>
             </Flex>
 
@@ -253,7 +253,7 @@ const Subscribers = () => {
                 <ModalOverlay />
                 <ModalContent>
                     <form onSubmit={handleSubmit}>
-                        <ModalHeader>New Category</ModalHeader>
+                        <ModalHeader>New Subscriber</ModalHeader>
                         <ModalCloseButton />
                         <ModalBody pb={6}>
 

@@ -1,6 +1,6 @@
-import useFetch from "../Hooks/useFetch";
+
 import { useToast } from '@chakra-ui/react'
-import { useRef } from 'react';
+import {  useRef } from 'react';
 import axios from "axios";
 import { FaPlus } from 'react-icons/fa';
 import {
@@ -22,12 +22,27 @@ import { SimpleGrid, CardFooter, CardBody, Card, Heading, CardHeader, Text, Butt
 import { useEffect, useState } from "react";
 import { HandlePostRequest } from "../Helpers/HandlePostRequest";
 import { Hoc } from "../HOC/hoc";
+import { useDispatch, useSelector } from "react-redux";
+import { allCategories, deleteCategory, CategoriesSlice, createCategory } from "../features/category/categorySlice";
 
 const Category = () => {
-  const { data, ispending, err } = useFetch("http://localhost:8080/category")
-  console.log(data);
-  const [categories, setCategories] = useState(data);
 
+
+  //redux
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(allCategories())
+
+  }, [dispatch]);
+
+const {categories:cats,loading,error:err} = useSelector(state=>state.CategoriesSlice);
+
+
+  //redux
+
+
+
+  const [categories,setCategories]=useState(cats);
   const [searchTerm, setSearchTerm] = useState("")
   const [formData, setFormData] = useState({
     title: '',
@@ -42,46 +57,49 @@ const Category = () => {
   const toast = useToast()
 
   useEffect(() => {
-    if (data) {
-      setCategories(data);
+    if (cats) {
+      setCategories(cats);
     }
-  }, [data]);
+  }, [cats]);
 
 
-  const handleDeleteCat = (id) => {
-    console.log("Category id:", id);
-    axios.delete("http://localhost:8080/category/" + id)
-      .then(() => {
+  const handleDeleteCat = async (id) => {
+    try {
 
-        toast({
-          title: 'Category Deleted.',
-          description: "Category has been deleted successfully!",
-          status: 'success',
-          duration: 3000,
-          isClosable: true,
-        })
-        const newCats = categories.filter(cat => cat.catId !== id);
-        setCategories(newCats);
+      await dispatch(deleteCategory(id));
+  
 
-      })
-      .catch(error => {
-        toast({
-          title: 'Server Error.',
-          description: "Error:" + error,
-          status: 'error',
-          duration: 3000,
-          isClosable: true,
-        })
-      })
-  }
+      dispatch(CategoriesSlice.actions.deleteCategory(id));
+  
+
+      toast({
+        title: 'Category Deleted.',
+        description: 'Category has been deleted successfully!',
+        status: 'success',
+        duration: 3000,
+        isClosable: true,
+      });
+    } catch (error) {
+      // Handle errors, show error toast, etc.
+      console.error('Failed to delete category:', error);
+      toast({
+        title: 'Error',
+        description: 'Failed to delete category.',
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
+      });
+    }
+  };
 
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      const newCategory = await HandlePostRequest("http://localhost:8080/category", formData);
-      setCategories([...categories, newCategory.data]);
+      const addedCat =await dispatch(createCategory(formData));
+      console.log("fdfd",addedCat)
+      dispatch(CategoriesSlice.actions.addCategory(addedCat.payload))
       onClose();
 
       setFormData({
@@ -114,12 +132,7 @@ const Category = () => {
   return (
     <>
       <h1> A list of Categories</h1>
-      {ispending &&
-        <Flex justify="center" marginTop={200}>
-          <Spinner thickness='4px' speed='0.65s' emptyColor='gray.200' color='green.500' size='xl' />
-        </Flex>
-      }
-      {err && <div>{err.message}</div>}
+      
       <Flex justify="space-between" m="30">
 
         <Input type="text" placeholder="Search Category" variant='outline' value={searchTerm} onChange={(event) => setSearchTerm(event.target.value)} htmlSize={30} width='auto' />
@@ -129,7 +142,12 @@ const Category = () => {
       <Flex direction="column" m="100">
 
         <SimpleGrid spacing={20} templateColumns='repeat(auto-fill, minmax(230px, 1fr))'>
-
+        {loading &&
+        <Flex justify="center" marginTop={200}>
+          <Spinner thickness='4px' speed='0.65s' emptyColor='gray.200' color='green.500' size='xl' />
+        </Flex>
+      }
+      {err && <div>{err.message}</div>}
           {filteredCategories && filteredCategories.map((category) => (
             <Card key={category.catId}>
               <CardHeader  >
@@ -140,9 +158,9 @@ const Category = () => {
               </CardBody>
               <CardFooter >
 
-                <Button >View Books</Button>
 
-                <Button marginLeft={10} variant='outline' colorScheme='red' onClick={() => handleDeleteCat(category.catId)}>Delete</Button>
+
+                <Button marginLeft="auto" variant='outline' colorScheme='red' onClick={() => handleDeleteCat(category.catId)}>Delete</Button>
               </CardFooter>
             </Card>
           ))
