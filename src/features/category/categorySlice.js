@@ -22,15 +22,7 @@ export const CategoriesSlice = createSlice({
         loading:false,
         error:null
     },
-    reducers:{
-        addCategory: (state, action) => {
-            state.categories.push(action.payload);
-        },
-        deleteCategory: (state, action) => {
-            console.log("yesssssssss",action)
-            state.categories = state.categories.filter(category => category.catId !== action.payload);
-        },
-    },
+    reducers:{},
     extraReducers:(builder) => {
             builder
                 .addCase(allCategories.pending, (state) => {
@@ -44,63 +36,40 @@ export const CategoriesSlice = createSlice({
                 .addCase(allCategories.rejected, (state, action) => {
                     state.loading = false;
                     state.error = action.error;
-                })       
-        }
-
-    
-})
-export const createCat = createSlice({
-    name:"addCategory",
-    initialState:{
-        categorie:{},
-        loading:false,
-        error:null
-    },
-    reducers:{},
-    extraReducers:(builder) => {
-            builder
+                })
+                //create Category
                 .addCase(createCategory.pending, (state) => {
-                    state.loading = true;
+                    state.loading = false;
                     state.error = null
                 })
                 .addCase(createCategory.fulfilled, (state, action) => {
                     state.loading = false;
-                    state.categories = action.payload;
+                    state.categories.push(action.payload);
                 })
                 .addCase(createCategory.rejected, (state, action) => {
                     state.loading = false;
                     state.error = action.error.message;
-                })       
-        }
-
-    
-})
-export const deleteCat = createSlice({
-    name:"addCategory",
-    initialState:{
-        categorie:{},
-        loading:false,
-        error:null
-    },
-    reducers:{},
-    extraReducers:(builder) => {
-            builder
+                }) 
+                //delete Category
                 .addCase(deleteCategory.pending, (state) => {
-                    state.loading = true;
+                    state.loading = false;
                     state.error = null
                 })
                 .addCase(deleteCategory.fulfilled, (state, action) => {
                     state.loading = false;
-                    state.categories = action.payload;
+                    console.log("inside",action.payload)
+                    state.categories = state.categories.filter(category => category.catId !== action.payload);
                 })
                 .addCase(deleteCategory.rejected, (state, action) => {
                     state.loading = false;
                     state.error = action.error.message;
-                })       
+                })        
         }
 
     
 })
+
+
 
 
 

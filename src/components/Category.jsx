@@ -1,7 +1,7 @@
 
 import { useToast } from '@chakra-ui/react'
 import {  useRef } from 'react';
-import axios from "axios";
+
 import { FaPlus } from 'react-icons/fa';
 import {
   Modal,
@@ -20,10 +20,10 @@ import {
 import { Flex, Spinner } from '@chakra-ui/react'
 import { SimpleGrid, CardFooter, CardBody, Card, Heading, CardHeader, Text, Button } from '@chakra-ui/react';
 import { useEffect, useState } from "react";
-import { HandlePostRequest } from "../Helpers/HandlePostRequest";
+
 import { Hoc } from "../HOC/hoc";
 import { useDispatch, useSelector } from "react-redux";
-import { allCategories, deleteCategory, CategoriesSlice, createCategory } from "../features/category/categorySlice";
+import { allCategories, deleteCategory, createCategory } from "../features/category/categorySlice";
 
 const Category = () => {
 
@@ -67,10 +67,6 @@ const {categories:cats,loading,error:err} = useSelector(state=>state.CategoriesS
     try {
 
       await dispatch(deleteCategory(id));
-  
-
-      dispatch(CategoriesSlice.actions.deleteCategory(id));
-  
 
       toast({
         title: 'Category Deleted.',
@@ -97,9 +93,9 @@ const {categories:cats,loading,error:err} = useSelector(state=>state.CategoriesS
     e.preventDefault();
 
     try {
-      const addedCat =await dispatch(createCategory(formData));
-      console.log("fdfd",addedCat)
-      dispatch(CategoriesSlice.actions.addCategory(addedCat.payload))
+    
+      await dispatch(createCategory(formData));
+
       onClose();
 
       setFormData({
