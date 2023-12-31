@@ -35,7 +35,8 @@ export const CategoriesSlice = createSlice({
                 })
                 .addCase(allCategories.rejected, (state, action) => {
                     state.loading = false;
-                    state.error = action.error;
+                    state.categories = []
+                    state.error = "Server Error";
                 })
                 //create Category
                 .addCase(createCategory.pending, (state) => {
