@@ -1,7 +1,7 @@
-import { suite, test } from 'vitest';
+import { suite, test,it } from 'vitest';
 import { expect } from 'chai';
 import { store } from '../Store/store'; // Adjust the path accordingly
-import { allCategories } from '../features/category/categorySlice';
+import { CategoriesSlice, allCategories, createCategory, deleteCategory } from '../features/category/categorySlice';
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
 
@@ -51,5 +51,88 @@ suite('Categories Slice', () => {
 
     expect(state.loading).toBe(false);
     expect(state.error).toBe('Server Error');
+  });
+
+//***********************************UNIT TEST********************//
+  it('Removes a category from all categories', () => {
+    const initialState = {
+      loading: false,
+      categories: [
+        {
+            books: [],
+            catId: 35,
+            title: 'test1',
+            description: 'test1',
+          },
+          {
+            books: [],
+            catId: 36,
+            title: 'test2',
+            description: 'test2',
+          },
+      ],
+      error: null,
+    };
+    const categoryToRemoveId = 35;
+    const action = deleteCategory.fulfilled(categoryToRemoveId);
+    const newState = CategoriesSlice.reducer(initialState, action);
+    const expectedState = {
+      loading: false,
+      categories: [
+        {
+            books: [],
+            catId: 36,
+            title: 'test2',
+            description: 'test2',
+          },
+      ],
+      error: null,
+    };
+    expect(newState).toEqual(expectedState);
+  });
+
+  it('َََAdds a category to the categories', () => {
+
+    const initialState = {
+      loading: false,
+      categories: [
+        {
+            books: [],
+            catId: 36,
+            title: 'test2',
+            description: 'test2',
+          },
+      ],
+      error: null,
+    };
+
+    const newCategoryData = {
+        books: [],
+        catId: 40,
+        title: 'test5',
+        description: 'test5',
+      };
+    const action = createCategory.fulfilled(newCategoryData);
+    const newState = CategoriesSlice.reducer(initialState, action);
+    const expectedState = {
+      loading: false,
+      categories: [
+        {
+            books: [],
+            catId: 36,
+            title: 'test2',
+            description: 'test2',
+          },
+          {
+            books: [],
+            catId: 40,
+            title: 'test5',
+            description: 'test5',
+          }
+      ],
+      error: null,
+    };
+
+    expect(newState).toEqual(expectedState);
   });
 });
