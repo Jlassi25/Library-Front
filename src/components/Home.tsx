@@ -62,7 +62,21 @@ const Home = () => {
 
             <div className="col-6 col-md-3 mt-5 d-flex justify-content-center align-items-center" />
 
-           
+            <div className="col-6 col-md-12 d-flex justify-content-center align-items-center">
+              <div className="card card-stats">
+                <div className="card-header card-header-success card-header-icon" style={{ backgroundColor: '#d8f3dc' }}>
+                  <div className="card-icon">
+                    <i className="nc-icon nc-icon nc-chart-pie-35" />
+                  </div>
+                  <p className="card-category" style={{ color: 'black' }}>
+                    Number of bookings
+                  </p>
+                  <a className="nav-link" href="/subscriber">
+                    <h4 className="card-title text-center"><b>{nbrBooked&&nbrBooked.length}</b> </h4>
+                  </a>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>

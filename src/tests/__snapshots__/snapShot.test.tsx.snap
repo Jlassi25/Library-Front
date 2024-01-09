@@ -1,0 +1,162 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Home Page > renders snapshot 1`] = `
+<div
+  class="container-fluid"
+>
+  <div
+    class="section"
+  >
+    <div
+      class="row"
+    >
+      <div
+        class="col-6 col-md-2"
+      />
+      <div
+        class="col-6 col-md-8"
+      >
+        <br />
+        <br />
+        <h1
+          style="text-align: center; font-weight: 400; color: rgb(2, 23, 5);"
+        >
+          Hello and welcome back Admin
+        </h1>
+        <br />
+        <br />
+        <h2
+          style="text-align: center; font-weight: 300; color: rgb(2, 23, 5);"
+        >
+          Here's some statistics of Library
+        </h2>
+      </div>
+      <div
+        class="col-6 col-md-2"
+      />
+    </div>
+    <br />
+    <div
+      class="row"
+    >
+      <div
+        class="col-6 col-md-3"
+      />
+      <div
+        class="col-6 col-md-3"
+      >
+        <div
+          class="card card-stats"
+        >
+          <div
+            class="card-header card-header-success card-header-icon"
+            style="background-color: rgb(216, 243, 220);"
+          >
+            <div
+              class="card-icon"
+            >
+              <i
+                class="nc-icon nc-icon nc-chart-bar-32"
+              />
+            </div>
+            <p
+              class="card-category"
+              style="color: black;"
+            >
+              Number of Book
+            </p>
+            <a
+              class="nav-link"
+              href="/book"
+            >
+              <h4
+                class="card-title text-center"
+              >
+                <b />
+                 Books
+              </h4>
+            </a>
+          </div>
+        </div>
+      </div>
+      <div
+        class="col-6 col-md-3"
+      >
+        <div
+          class="card card-stats"
+        >
+          <div
+            class="card-header card-header-success card-header-icon"
+            style="background-color: rgb(216, 243, 220);"
+          >
+            <div
+              class="card-icon"
+            >
+              <i
+                class="nc-icon nc-icon nc-chart-pie-35"
+              />
+            </div>
+            <p
+              class="card-category"
+              style="color: black;"
+            >
+              Number of Subscriber
+            </p>
+            <a
+              class="nav-link"
+              href="/subscriber"
+            >
+              <h4
+                class="card-title text-center"
+              >
+                <b />
+                 Subscribers
+              </h4>
+            </a>
+          </div>
+        </div>
+      </div>
+      <div
+        class="col-6 col-md-3 mt-5 d-flex justify-content-center align-items-center"
+      />
+      <div
+        class="col-6 col-md-12 d-flex justify-content-center align-items-center"
+      >
+        <div
+          class="card card-stats"
+        >
+          <div
+            class="card-header card-header-success card-header-icon"
+            style="background-color: rgb(216, 243, 220);"
+          >
+            <div
+              class="card-icon"
+            >
+              <i
+                class="nc-icon nc-icon nc-chart-pie-35"
+              />
+            </div>
+            <p
+              class="card-category"
+              style="color: black;"
+            >
+              Number of bookings
+            </p>
+            <a
+              class="nav-link"
+              href="/subscriber"
+            >
+              <h4
+                class="card-title text-center"
+              >
+                <b />
+                 
+              </h4>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
