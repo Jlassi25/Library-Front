@@ -24,27 +24,28 @@ import { useEffect, useState } from "react";
 import { Hoc } from "../HOC/hoc";
 import { useDispatch, useSelector } from "react-redux";
 import { allCategories, deleteCategory, createCategory } from "../features/category/categorySlice";
+import { AppDispatch } from '../Store/store';
 
 const Category = () => {
 
 
   //redux
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   useEffect(() => {
     dispatch(allCategories())
 
   }, [dispatch]);
 
-const {categories:cats,loading,error:err} = useSelector(state=>state.CategoriesSlice);
+const {categories:cats,loading,error:err} = useSelector((state:any)=>state.CategoriesSlice);
 
 
   //redux
 
 
 
-  const [categories,setCategories]=useState(cats);
-  const [searchTerm, setSearchTerm] = useState("")
-  const [formData, setFormData] = useState({
+  const [categories,setCategories]=useState<any>(cats);
+  const [searchTerm, setSearchTerm] = useState<any>("")
+  const [formData, setFormData] = useState<any>({
     title: '',
     description: ''
   });
@@ -63,7 +64,7 @@ const {categories:cats,loading,error:err} = useSelector(state=>state.CategoriesS
   }, [cats]);
 
 
-  const handleDeleteCat = async (id) => {
+  const handleDeleteCat = async (id:any) => {
     try {
 
       await dispatch(deleteCategory(id));
@@ -89,7 +90,7 @@ const {categories:cats,loading,error:err} = useSelector(state=>state.CategoriesS
   };
 
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e:any) => {
     e.preventDefault();
 
     try {
@@ -121,13 +122,13 @@ const {categories:cats,loading,error:err} = useSelector(state=>state.CategoriesS
     }
 
   }
-  const filteredCategories = categories ? categories.filter((cat) =>
+  const filteredCategories = categories ? categories.filter((cat:any) =>
     cat.title && cat.title.toLowerCase().includes( searchTerm.toLowerCase())
   ):categories
 
   return (
     <>
-      <h1> A list of Categories</h1>
+      <h1> List of Categories</h1>
       
       <Flex justify="space-between" m="30">
 
@@ -143,8 +144,8 @@ const {categories:cats,loading,error:err} = useSelector(state=>state.CategoriesS
           <Spinner thickness='4px' speed='0.65s' emptyColor='gray.200' color='green.500' size='xl' />
         </Flex>
       }
-      {err && <div>{err.message}</div>}
-          {filteredCategories && filteredCategories.map((category) => (
+      {err && <div>{err.message} </div>}
+          {filteredCategories && filteredCategories.map((category:any) => (
             <Card key={category.catId}>
               <CardHeader  >
                 <Heading size='md'>{category.title}</Heading>

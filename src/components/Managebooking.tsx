@@ -7,12 +7,12 @@ import { Hoc } from "../HOC/hoc";
 
 const ManageBooking = () => {
 
-  const [borrowed, setBorrowed] = useState([]);
-  const [isPending, setIsPending] = useState(true);
-  const [cancelPressed, setCancelPressed] = useState(false);
+  const [borrowed, setBorrowed] = useState<any>([]);
+  const [isPending, setIsPending] = useState<Boolean>(true);
+  const [cancelPressed, setCancelPressed] = useState<Boolean>(false);
 
-  const [notBorrowed, setNotBorrowed] = useState([]);
-  const [subscribers, setSubscribers] = useState([]);
+  const [notBorrowed, setNotBorrowed] = useState<any>([]);
+  const [subscribers, setSubscribers] = useState<any>([]);
   //for dropdown
   const selectedSubs = useRef('');
   const selectedBook = useRef('');
@@ -28,13 +28,13 @@ const ManageBooking = () => {
 
       try {
         const { data: response } = await axios.get("http://localhost:8080/book");
-        const borrowedData = response.filter(item => !item.available);
+        const borrowedData = response.filter((item:any) => !item.available);
         setBorrowed(borrowedData);
 
-        const notBorrowedData = response.filter(item => item.available);
+        const notBorrowedData = response.filter((item:any) => item.available);
         setNotBorrowed(notBorrowedData);
 
-      } catch (error) {
+      } catch (error:any) {
         console.error(error.message);
       }
       setIsPending(false);
@@ -47,7 +47,7 @@ const ManageBooking = () => {
         const { data: response } = await axios.get("http://localhost:8080/subscriber");
         setSubscribers(response);
         console.log(response);
-      } catch (error) {
+      } catch (error:any) {
         console.error(error.message);
       }
     }
@@ -61,7 +61,7 @@ const ManageBooking = () => {
   );
 
   //cancel
-  const handleCancel = (item) => {
+  const handleCancel = (item:any) => {
     axios.get(`http://localhost:8080/booking/${item.isbn}`).then(
       () => {
         toast({
@@ -71,7 +71,7 @@ const ManageBooking = () => {
           duration: 3000,
           isClosable: true,
         });
-        const newBorrowed = borrowed.filter(borrowItem => borrowItem.isbn != item.isbn)
+        const newBorrowed = borrowed.filter((borrowItem:any) => borrowItem.isbn != item.isbn)
         setBorrowed(newBorrowed);
         setNotBorrowed([...notBorrowed,item]);
 
@@ -90,7 +90,7 @@ const ManageBooking = () => {
 
   //add new Booking
   const addNewBooking = async () => {
-    if (selectedBook.current == '' || selectedSubs.current == '' | selectedDateBack.current == '') {
+    if (selectedBook.current == '' || selectedSubs.current == '' || selectedDateBack.current == '') { ///change the second |
       toast({
         title: 'Empty field',
         description: 'fill the inputs please!',
@@ -141,7 +141,7 @@ const ManageBooking = () => {
             <div className="row">
               <div className="col-md-4">
                 <Select placeholder='select subscriber' onChange={(e) => { selectedSubs.current = e.target.value; }}>
-                  {subscribers.map(item => (
+                  {subscribers.map((item:any) => (//here also
                     <option key={item.cin} value={item.cin}>{item.fname} {item.lname}</option>
                   ))}
 
@@ -150,7 +150,7 @@ const ManageBooking = () => {
 
               <div className="col-md-4">
                 <Select placeholder='select book' onChange={(e) => { selectedBook.current = e.target.value; }}>
-                  {notBorrowed.map(item => (
+                  {notBorrowed.map((item:any) => (
                     <option key={item.isbn} value={item.isbn}>{item.title}</option>
                   ))}
                 </Select>
@@ -197,7 +197,7 @@ const ManageBooking = () => {
               <div className="col-6 col-md-2" />
               <div className="col-6 col-md-8">
                 {/* boucli for hne*/}
-                {borrowed.map(item => (
+                {borrowed.map((item:any) => (
                   <div key={item.isbn} className="card" style={{ backgroundColor: '#326f59' }}>
                     <div className="card-header card-header-success" style={{ backgroundColor: '#B7E4C7' }}>
                       <div className="row">

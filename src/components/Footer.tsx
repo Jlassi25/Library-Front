@@ -5,7 +5,7 @@ const Footer = () => {
     <nav>
       <p className="copyright text-center ">
         ©
-        2023 Made with love by Upper Moons Jlassi and Hmed
+        2023 Made with love by Upper Moons Aymen Jlassi and Ahme Ben Hmed
       </p>
     </nav>
   </div>

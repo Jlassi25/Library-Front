@@ -5,11 +5,11 @@ export const allCategories = createAsyncThunk('categpry/allCategories', async ()
             const response =await axios.get("http://localhost:8080/category");
             return response.data;     
 })
-export const createCategory = createAsyncThunk('categpry/createCategory', async (newCategory)=>{
+export const createCategory = createAsyncThunk('categpry/createCategory', async (newCategory:any)=>{
     const response =await axios.post("http://localhost:8080/category",newCategory);
     return response.data;
 })
-export const deleteCategory = createAsyncThunk('categpry/deleteCategory', async (id)=>{
+export const deleteCategory = createAsyncThunk('categpry/deleteCategory', async (id:Number)=>{
     const response =await axios.delete("http://localhost:8080/category/"+id);
     return response.data;
 })
@@ -33,21 +33,21 @@ export const CategoriesSlice = createSlice({
                     state.loading = false;
                     state.categories = action.payload;
                 })
-                .addCase(allCategories.rejected, (state, action) => {
+                .addCase(allCategories.rejected, (state:any, action) => {
                     state.loading = false;
                     state.categories = []
-                    state.error = "Server Error";
+                    state.error = action.error;
                 })
                 //create Category
                 .addCase(createCategory.pending, (state) => {
                     state.loading = false;
                     state.error = null
                 })
-                .addCase(createCategory.fulfilled, (state, action) => {
+                .addCase(createCategory.fulfilled, (state:any, action:any) => {
                     state.loading = false;
                     state.categories.push(action.payload);
                 })
-                .addCase(createCategory.rejected, (state, action) => {
+                .addCase(createCategory.rejected, (state:any, action) => {
                     state.loading = false;
                     state.error = action.error.message;
                 }) 
@@ -59,9 +59,9 @@ export const CategoriesSlice = createSlice({
                 .addCase(deleteCategory.fulfilled, (state, action) => {
                     state.loading = false;
                     console.log("inside",action.payload)
-                    state.categories = state.categories.filter(category => category.catId !== action.payload);
+                    state.categories = state.categories.filter((category:any) => category.catId !== action.payload);
                 })
-                .addCase(deleteCategory.rejected, (state, action) => {
+                .addCase(deleteCategory.rejected, (state:any, action) => {
                     state.loading = false;
                     state.error = action.error.message;
                 })        

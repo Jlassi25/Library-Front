@@ -24,7 +24,7 @@ const BookDetails = () => {
     const navigate = useNavigate();
     const toast = useToast()
     const { isOpen, onOpen, onClose } = useDisclosure()
-    const cancelRef = useRef()
+    const cancelRef = useRef<any>()
 
     const handleDelete = () => {
         axios.delete("http://localhost:8080/book/" + id)

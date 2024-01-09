@@ -6,7 +6,7 @@ import { ChakraProvider } from '@chakra-ui/react'
 import { store } from './Store/store';
 import { Provider } from 'react-redux';
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
+const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(
     <ChakraProvider>  
         <Provider store={store}>

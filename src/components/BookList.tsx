@@ -25,13 +25,13 @@ import {
   AutoCompleteItem,
   AutoCompleteList,
 } from "@choc-ui/chakra-autocomplete";
-const BookList = ({ books }) => {
-  const [searchTerm, setSearchTerm] = useState("")
+const BookList = ({ books }:any) => {
+  const [searchTerm, setSearchTerm] = useState<any>("")
   const { data: cats} = useFetch("http://localhost:8080/category")
   const { data: boks} = useFetch("http://localhost:8080/book")
-  const [bookList, setBookList] = useState([]);
+  const [bookList, setBookList] = useState<any>([]);
 
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<any>({
     title: '',
     author: '',
     category:{}
@@ -52,7 +52,7 @@ const BookList = ({ books }) => {
 
   const toast = useToast()
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e:any) => {
     e.preventDefault();
 
     try {
@@ -87,14 +87,14 @@ const BookList = ({ books }) => {
     }
 
   }
-  const filteredBooks = bookList ? bookList.filter((book) =>
+  const filteredBooks = bookList ? bookList.filter((book:any) =>
   book.title && book.title.toLowerCase().includes(searchTerm.toLowerCase())
 ) : bookList;
   return (
     <>
       <div id="large-th">
         <div className="cont">
-          <h1> A list of books</h1>
+          <h1> List of books</h1>
           <Flex justify="space-between" m="30">
 
             <Input type="text" placeholder="Search Book" variant='outline' value={searchTerm} onChange={(event) => setSearchTerm(event.target.value)} htmlSize={30} width='auto' />
@@ -108,7 +108,7 @@ const BookList = ({ books }) => {
           </div>
 
           <div id="list-th">
-            {filteredBooks.map((book) => (
+            {filteredBooks.map((book:any) => (
               <div className="book read" key={book.isbn}>
                 <Link to={`/book/${book.isbn}`}>
                   <div className="cover">
@@ -162,7 +162,7 @@ const BookList = ({ books }) => {
                   <AutoCompleteInput variant="outline" placeholder='Select Category'   />
                   <AutoCompleteList>
       
-                    {cats && cats.map((cat) => (
+                    {cats && cats.map((cat:any) => (
                       <AutoCompleteItem 
                         
                         key={cat.catId}

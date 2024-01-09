@@ -13,6 +13,7 @@ import {
     Input,
 
 } from '@chakra-ui/react';
+
 import {
     Modal,
     ModalOverlay,
@@ -27,11 +28,16 @@ import {
 } from '@chakra-ui/react'
 import useFetch from '../Hooks/useFetch';
 import { FaPlus } from 'react-icons/fa';
-import { useRef,useEffect, useState } from 'react';
+import { useRef, useEffect, useState } from 'react';
 import { HandlePostRequest } from '../Helpers/HandlePostRequest';
 import { useToast } from '@chakra-ui/react'
-import  axios  from 'axios';
+import axios from 'axios';
 import { Hoc } from '../HOC/hoc';
+import { allSubscriber, createSubscriber, deleteSubscriber, sortSubscribersASC, sortSubscribersDES } from '../features/subscriber/subscriberSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch } from '../Store/store';
+import ReactPaginate from 'react-paginate';
+
 
 
 const Subscribers = () => {
@@ -40,129 +46,154 @@ const Subscribers = () => {
 
     const initialRef = useRef(null)
 
-    const { data, ispending, err } =  useFetch("http://localhost:8080/subscriber")
+    const { subscribers: subs, loading, error:err } = useSelector((state: any) => state.Subscribers);
 
-    const [subscribers,setSubscribers] = useState(data);
-    const [searchTerm, setSearchTerm] = useState("")
-    
-  
+    const [subscribers, setSubscribers] = useState<any>(subs);
+    const [searchTerm, setSearchTerm] = useState<string>("")
+
+    const dispatch = useDispatch<AppDispatch>();
     useEffect(() => {
-        if (data) {
-        console.log("Litle use effect works")
+        dispatch(allSubscriber())
+    }, [dispatch]);
 
-            setSubscribers(data);
-        }
-      }, [data]);
-      
-   
- 
-    
+    useEffect(() => {
+
+        setSubscribers(subs);
+
+    }, [subs]);
+
+
 
 
     const toast = useToast()
-    
 
-    const [formData,setFormData] = useState({
-        fname:'',
-        lname:'',
-        address:'',
-        expirationDate:''
+
+    const [formData, setFormData] = useState<any>({
+        fname: '',
+        lname: '',
+        address: '',
+        expirationDate: ''
     })
+    //**********Pagination************* */
+    const [itemOffset, setItemOffset] = useState(0);
+
+    const filteredSubs = subscribers ? subscribers.filter((sub: any) =>
+    sub.fname && sub.fname.toLowerCase().includes(searchTerm.toLowerCase())
+) : subscribers;
 
 
+    const endOffset = itemOffset + 3;
+    console.log(`Loading items from ${itemOffset} to ${endOffset}`);
+    const paginatedItems = filteredSubs.slice(itemOffset, endOffset);
+    const pageCount = Math.ceil(filteredSubs.length / 3);
+
+    const handlePageClick = (event:any) => {
+        const newOffset = (event.selected * 3) % filteredSubs.length;
+       
+        setItemOffset(newOffset);
+      };
 
     //?submit method
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = async (e: any) => {
         e.preventDefault();
-        console.log(formData)
+       
         //setFormData(...formData.expirationDate = new Date(formData.expirationDate).toISOString().slice(0, 10))
-        
-    
+
+
         try {
-          const newSubscriber = await HandlePostRequest("http://localhost:8080/subscriber", formData);
-          console.log("thisone ",newSubscriber)
-          setSubscribers([...subscribers, newSubscriber.data]);
-          onClose();
-    
-          setFormData({
-            title: '',
-            description: ''
-          });
-          toast({
-            title: 'Subscriber Added.',
-            description: `Subscriber ${formData.title} has been added successfully!`,
-            status: 'success',
-            duration: 3000,
-            isClosable: true,
-          })
+            await dispatch(createSubscriber(formData))
+
+            onClose();
+
+            setFormData({
+                title: '',
+                description: ''
+            });
+            toast({
+                title: 'Subscriber Added.',
+                description: `Subscriber ${formData.title} has been added successfully!`,
+                status: 'success',
+                duration: 3000,
+                isClosable: true,
+            })
         } catch (err) {
-          toast({
-            title: 'Server Error.',
-            description: "Error:" + err,
-            status: 'error',
-            duration: 3000,
-            isClosable: true,
-          })
-    
+            toast({
+                title: 'Server Error.',
+                description: "Error:" + err,
+                status: 'error',
+                duration: 3000,
+                isClosable: true,
+            })
+
         }
-    
-      }
+
+    }
 
 
-      //? handle delete
+    //? handle delete
 
-      const handleDelete = (id) => {
+    const handleDelete = async (id: Number) => {
+        try {
+            await dispatch(deleteSubscriber(id))
 
-        axios.delete("http://localhost:8080/subscriber/" + id)
-          .then(() => {
-    
             toast({
-              title: 'Subscriber Deleted.',
-              description: "Subscriber has been deleted successfully!",
-              status: 'success',
-              duration: 3000,
-              isClosable: true,
+                title: 'Subscriber Deleted.',
+                description: "Subscriber has been deleted successfully!",
+                status: 'success',
+                duration: 3000,
+                isClosable: true,
             })
-            const newSubs = subscribers.filter(sub => sub.cin !== id);
-            setSubscribers(newSubs);
-    
-          })
-          .catch(error => {
+
+        } catch (error: any) {
             toast({
-              title: 'Server Error.',
-              description: "Error:" + error,
-              status: 'error',
-              duration: 3000,
-              isClosable: true,
+                title: 'Server Error.',
+                description: "Error:" + error,
+                status: 'error',
+                duration: 3000,
+                isClosable: true,
             })
-          })
-      }
-      const filteredSubs = subscribers ? subscribers.filter((sub) =>
-      sub.fname && sub.fname.toLowerCase().includes(searchTerm.toLowerCase())
-    ) : subscribers;
+        }
+    }
+ 
+    //try sort
+    const [sort,setSort]= useState<boolean>(true);
+    const sortbydate=()=>{
+        if(sort){
+            dispatch(sortSubscribersASC())
+            setSort(false)
+        }else{
+            dispatch(sortSubscribersDES())
+            setSort(true)
+        }
+       
+    }
+   
     return (
         <>
+       
             <h1> Subscribers</h1>
-            {ispending &&
-                <Flex justify="center" marginTop={200}>
+            {loading &&
+                <Flex  data-testid="loading"  justify="center" marginTop={200}>
                     <Spinner thickness='4px' speed='0.65s' emptyColor='gray.200' color='green.500' size='xl' />
                 </Flex>
             }
-            {err && <div>{err.message}</div>}
+            {err && <div data-testid="error">{err.message}</div>}
 
 
             <Flex justify="space-between" m="30">
 
-                <Input type="text" placeholder="Search Subscriber" variant='outline' value={searchTerm} onChange={(event) => setSearchTerm(event.target.value)}  htmlSize={30} width='auto' />
+                <Input data-testid="search" type="text" placeholder="Search Subscriber" variant='outline' value={searchTerm} onChange={(event) => setSearchTerm(event.target.value)} htmlSize={30} width='auto' />
                 <Button colorScheme='teal' onClick={onOpen} >New Subscriber <FaPlus style={{ marginLeft: '8px' }} /></Button>
             </Flex>
-
-
+            <Flex justify="center">
+            <button className='btn btn-info'  onClick={sortbydate}><strong>Sort by Expiration Date {sort?"ASC":"DES"}</strong></button>
+            </Flex>
 
             <Flex wrap="wrap" justify="space-around">
-                {filteredSubs && filteredSubs.map((sub) => (
+                {paginatedItems && paginatedItems.map((sub: any) => (
                     <Box
+                    data-testid="card"
                         key={sub.cin}
                         m={10}
                         maxW={'270px'}
@@ -175,7 +206,7 @@ const Subscribers = () => {
                             h={'120px'}
                             w={'full'}
                             src={
-                                'https://i.ibb.co/ns4bb53/t-l-chargement.jpg'
+                                'https://miro.medium.com/v2/resize:fit:828/format:webp/1*6Jp3vJWe7VFlFHZ9WhSJng.jpeg'
                             }
                             objectFit={'cover'}
                         />
@@ -185,14 +216,15 @@ const Subscribers = () => {
                                 src={
                                     `https://api2.rntt.tn/routeicon?ligne=${sub.fname.charAt(0).toUpperCase() + sub.lname.charAt(0).toUpperCase()}&color=6BD098`
                                 }
-                                alt={'Author'}
+
                                 css={{
                                     border: '2px solid white',
                                 }}
                             />
                         </Flex>
 
-                        <Box p={6}>
+                        <Box   
+                        p={6}>
                             <Stack spacing={0} align={'center'} mb={5}>
                                 <Heading fontSize={'2xl'} fontWeight={500} fontFamily={'body'}>
                                     {sub.fname}  {sub.lname}
@@ -209,7 +241,7 @@ const Subscribers = () => {
                                     </Text>
                                 </Stack>
                                 <Stack spacing={0} align={'center'}>
-                                    <Text fontWeight={600}>{sub.books ? sub.books.length: 0}</Text>
+                                    <Text fontWeight={600}>{sub.books ? sub.books.length : 0}</Text>
                                     <Text fontSize={'sm'} color={'gray.500'}>
                                         Books
                                     </Text>
@@ -226,10 +258,10 @@ const Subscribers = () => {
                                     transform: 'translateY(-2px)',
                                     boxShadow: 'lg',
                                 }}
-                                
-                            onClick={()=>handleDelete(sub.cin)}
-                                >
-                                    
+
+                                onClick={() => handleDelete(sub.cin)}
+                            >
+
                                 Delete
                             </Button>
                         </Box>
@@ -240,7 +272,7 @@ const Subscribers = () => {
 
 
 
-
+     
 
 
 
@@ -272,7 +304,7 @@ const Subscribers = () => {
                             </FormControl>
                             <FormControl mt={4}>
                                 <FormLabel>Expiration Date</FormLabel>
-                                <Input type="date" value={formData.expirationDate} onChange={(event) => setFormData({ ...formData, expirationDate: event.target.value })}  placeholder='Expiration Date' />
+                                <Input type="date" value={formData.expirationDate} onChange={(event) => setFormData({ ...formData, expirationDate: event.target.value })} placeholder='Expiration Date' />
                             </FormControl>
                         </ModalBody>
 
@@ -285,9 +317,31 @@ const Subscribers = () => {
                     </form>
                 </ModalContent>
             </Modal>
+            <Flex justify="center">
+            <ReactPaginate
+        nextLabel="next >"
+        onPageChange={handlePageClick}
+        pageRangeDisplayed={3}
+        marginPagesDisplayed={2}
+        pageCount={pageCount}
+        previousLabel="< previous"
+        pageClassName="page-item"
+        pageLinkClassName="page-link"
+        previousClassName="page-item"
+        previousLinkClassName="page-link"
+        nextClassName="page-item"
+        nextLinkClassName="page-link"
+        breakLabel="..."
+        breakClassName="page-item"
+        breakLinkClassName="page-link"
+        containerClassName="pagination"
+        activeClassName="active"
+        renderOnZeroPageCount={null}
+      />
+            </Flex>
 
         </>
     );
 }
 
-export default  Hoc(Subscribers) ;
+export default Hoc(Subscribers);

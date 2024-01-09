@@ -29,7 +29,7 @@ const Login = () => {
         username: '',
         password: ''
     });
-    const handleLogin = async (e) => {
+    const handleLogin = async (e:any) => {
         e.preventDefault();
 
         try {

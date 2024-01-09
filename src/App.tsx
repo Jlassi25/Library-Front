@@ -22,8 +22,8 @@ function App() {
           <NavBar />
           <div className="content">
             <Routes>
-              <Route exact path="/" element={<Home />} />
-              <Route exact path="/book" element={<Book />} />
+              <Route  path="/" element={<Home />} />
+              <Route  path="/book" element={<Book />} />
               <Route path="/category" element={<Category />} />
               <Route path="/borrow" element={<ManageBooking />} />
               <Route path="/subscriber" element={<Subscribers />} />
