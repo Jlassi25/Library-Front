@@ -1,11 +1,12 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
+import { Subscriber } from "../../types/Subscriber";
 
 export const allSubscriber = createAsyncThunk('subscriber/allSubscriber', async () => {
     const response = await axios.get("http://localhost:8080/subscriber");
     return response.data;
 })
-export const createSubscriber = createAsyncThunk('subscriber/createSubscriber', async (newSubscriber: any) => {
+export const createSubscriber = createAsyncThunk('subscriber/createSubscriber', async (newSubscriber: Subscriber) => {
     const response = await axios.post("http://localhost:8080/subscriber", newSubscriber);
     return response.data;
 })

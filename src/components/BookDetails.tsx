@@ -16,11 +16,13 @@ import { useRef } from 'react';
 
 import axios from 'axios';
 import { Hoc } from "../HOC/hoc";
+import { color } from "framer-motion";
 
 
 const BookDetails = () => {
     const { id } = useParams()
     const { data: book, err, ispending } = useFetch("http://localhost:8080/book/" + id)
+    console.log(book)
     const navigate = useNavigate();
     const toast = useToast()
     const { isOpen, onOpen, onClose } = useDisclosure()
@@ -67,9 +69,9 @@ const BookDetails = () => {
                         <h3>{book.author}</h3>
                         <p className="description">{book.description}</p>
                         <div className="interests">
-                            <span className="interests_item">Technology</span>
-                            <span className="interests_item">Management</span>
-                            <span className="interests_item">Leadership</span>
+                            <span className="interests_item" style={{color:'black'}}>Borrowed: {book.borrowed} times</span>
+                            <span className="interests_item" style={{color:'black'}}>Category : {book.category.title} </span>
+                           {book.subscriber && <span className="interests_item" style={{color:'black'}}>Borrowed By : {book.subscriber.fname} {book.subscriber.lname}</span>} 
                         </div>
 
                     </div>

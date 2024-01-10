@@ -25,22 +25,20 @@ import {
   AutoCompleteItem,
   AutoCompleteList,
 } from "@choc-ui/chakra-autocomplete";
-const BookList = ({ books }:any) => {
-  const [searchTerm, setSearchTerm] = useState<any>("")
+import { BookInterface } from '../types/BookInterface';
+import { category } from '../types/category';
+const BookList = ({ boks }:{ boks: BookInterface[] }) => {
+  const [searchTerm, setSearchTerm] = useState<string>("")
   const { data: cats} = useFetch("http://localhost:8080/category")
-  const { data: boks} = useFetch("http://localhost:8080/book")
-  const [bookList, setBookList] = useState<any>([]);
 
-  const [formData, setFormData] = useState<any>({
+  const [bookList, setBookList] = useState<BookInterface[]>(boks);
+
+  const [formData, setFormData] = useState<BookInterface>({
     title: '',
     author: '',
     category:{}
   });
-  useEffect(() => {
-    if (boks) {
-      setBookList(boks);
-    }
-  }, [boks]);
+ 
 
 
   const { isOpen, onOpen, onClose } = useDisclosure()
@@ -87,7 +85,7 @@ const BookList = ({ books }:any) => {
     }
 
   }
-  const filteredBooks = bookList ? bookList.filter((book:any) =>
+  const filteredBooks = bookList ? bookList.filter((book:BookInterface) =>
   book.title && book.title.toLowerCase().includes(searchTerm.toLowerCase())
 ) : bookList;
   return (
@@ -108,7 +106,7 @@ const BookList = ({ books }:any) => {
           </div>
 
           <div id="list-th">
-            {filteredBooks.map((book:any) => (
+            {filteredBooks.map((book:BookInterface) => (
               <div className="book read" key={book.isbn}>
                 <Link to={`/book/${book.isbn}`}>
                   <div className="cover">
@@ -162,7 +160,7 @@ const BookList = ({ books }:any) => {
                   <AutoCompleteInput variant="outline" placeholder='Select Category'   />
                   <AutoCompleteList>
       
-                    {cats && cats.map((cat:any) => (
+                    {cats && cats.map((cat:category) => (
                       <AutoCompleteItem 
                         
                         key={cat.catId}

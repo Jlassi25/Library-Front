@@ -13,7 +13,6 @@ describe('Subscriber Component', () => {
 
     //Integration  TEST : Happy path
         it('succeeds fetching data : Happy path', async () => {
-    
             render(
                 <Provider store={store}>
                 <MemoryRouter> 
@@ -26,8 +25,6 @@ describe('Subscriber Component', () => {
             await waitFor(() => expect(screen.queryByTestId('loading')).toBeNull());
             expect(screen.queryByTestId('loading')).toBeNull();
         });
-
-
     //Integration  TEST : UnHappy path
         it('fails fetching data: unhappy path', async () => {
             render(
@@ -37,8 +34,7 @@ describe('Subscriber Component', () => {
                     </MemoryRouter>
                 </Provider>
             );
-        
-        
+
             const mock = new MockAdapter(axios);
             mock.onGet('http://localhost:8080/subscriber').reply(500, { error: 'Some error' });
         

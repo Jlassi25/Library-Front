@@ -4,12 +4,12 @@ import BookList from "./BookList";
 import { Flex, Spinner } from '@chakra-ui/react'
 
 const Book = () => {
-  const {data : books , ispending,err} = useFetch("http://localhost:8080/book")
+  const {data : boks , ispending,err} = useFetch("http://localhost:8080/book")
 
     return ( 
       <>
       
-      { books && <BookList books={books}/>}
+      { boks && <BookList boks={boks}/>}
       {ispending && <Flex justify="center" marginTop={200}>
         <Spinner thickness='4px' speed='0.65s'  emptyColor='gray.200' color='green.500' size='xl'/>
       </Flex>}

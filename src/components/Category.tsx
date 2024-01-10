@@ -26,6 +26,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { allCategories, deleteCategory, createCategory } from "../features/category/categorySlice";
 import { AppDispatch } from '../Store/store';
 
+import { category } from '../types/category';
+
 const Category = () => {
 
 
@@ -43,9 +45,9 @@ const {categories:cats,loading,error:err} = useSelector((state:any)=>state.Categ
 
 
 
-  const [categories,setCategories]=useState<any>(cats);
+  const [categories,setCategories]=useState<category[]>(cats);
   const [searchTerm, setSearchTerm] = useState<any>("")
-  const [formData, setFormData] = useState<any>({
+  const [formData, setFormData] = useState<category>({
     title: '',
     description: ''
   });
@@ -64,7 +66,7 @@ const {categories:cats,loading,error:err} = useSelector((state:any)=>state.Categ
   }, [cats]);
 
 
-  const handleDeleteCat = async (id:any) => {
+  const handleDeleteCat = async (id:number) => {
     try {
 
       await dispatch(deleteCategory(id));
@@ -122,7 +124,7 @@ const {categories:cats,loading,error:err} = useSelector((state:any)=>state.Categ
     }
 
   }
-  const filteredCategories = categories ? categories.filter((cat:any) =>
+  const filteredCategories = categories ? categories.filter((cat:category) =>
     cat.title && cat.title.toLowerCase().includes( searchTerm.toLowerCase())
   ):categories
 
@@ -145,7 +147,7 @@ const {categories:cats,loading,error:err} = useSelector((state:any)=>state.Categ
         </Flex>
       }
       {err && <div>{err.message} </div>}
-          {filteredCategories && filteredCategories.map((category:any) => (
+          {filteredCategories && filteredCategories.map((category:category) => (
             <Card key={category.catId}>
               <CardHeader  >
                 <Heading size='md'>{category.title}</Heading>

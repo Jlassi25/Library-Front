@@ -37,6 +37,7 @@ import { allSubscriber, createSubscriber, deleteSubscriber, sortSubscribersASC, 
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch } from '../Store/store';
 import ReactPaginate from 'react-paginate';
+import { Subscriber } from '../types/Subscriber';
 
 
 
@@ -48,7 +49,7 @@ const Subscribers = () => {
 
     const { subscribers: subs, loading, error:err } = useSelector((state: any) => state.Subscribers);
 
-    const [subscribers, setSubscribers] = useState<any>(subs);
+    const [subscribers, setSubscribers] = useState<Subscriber[]>(subs);
     const [searchTerm, setSearchTerm] = useState<string>("")
 
     const dispatch = useDispatch<AppDispatch>();
@@ -68,7 +69,7 @@ const Subscribers = () => {
     const toast = useToast()
 
 
-    const [formData, setFormData] = useState<any>({
+    const [formData, setFormData] = useState<Subscriber>({
         fname: '',
         lname: '',
         address: '',
@@ -77,7 +78,7 @@ const Subscribers = () => {
     //**********Pagination************* */
     const [itemOffset, setItemOffset] = useState(0);
 
-    const filteredSubs = subscribers ? subscribers.filter((sub: any) =>
+    const filteredSubs = subscribers ? subscribers.filter((sub: Subscriber) =>
     sub.fname && sub.fname.toLowerCase().includes(searchTerm.toLowerCase())
 ) : subscribers;
 
@@ -105,14 +106,16 @@ const Subscribers = () => {
             await dispatch(createSubscriber(formData))
 
             onClose();
-
             setFormData({
-                title: '',
-                description: ''
-            });
+                fname: '',
+                lname: '',
+                address: '',
+                expirationDate: ''
+            })
+            
             toast({
                 title: 'Subscriber Added.',
-                description: `Subscriber ${formData.title} has been added successfully!`,
+                description: `Subscriber ${formData.fname} has been added successfully!`,
                 status: 'success',
                 duration: 3000,
                 isClosable: true,

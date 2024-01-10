@@ -31,7 +31,7 @@ describe('Test Subscriber component', () => {
   
       //SIMULATE DELET PLAYER
 
-      expect(screen.getByText('sdf dfgf')).toBeInTheDocument();
+      expect(screen.getByText('sofien tajin')).toBeInTheDocument();
       await waitFor(() => {
         const deleteButton = screen.getAllByRole('button', { name: /Delete/ })[1];
         fireEvent.click(deleteButton);
@@ -39,7 +39,7 @@ describe('Test Subscriber component', () => {
   
   
       await waitFor(() => {
-        const deletedPlayer = 'sdf dfgf';
+        const deletedPlayer = 'sofien tajin';
         expect(screen.queryByText(deletedPlayer)).not.toBeInTheDocument();
       });
     });

@@ -4,15 +4,17 @@ import axios from "axios";
 import { FaPlus } from 'react-icons/fa';
 import { HandlePostRequest } from "../Helpers/HandlePostRequest";
 import { Hoc } from "../HOC/hoc";
+import { Subscriber } from "../types/Subscriber";
+import { BookInterface } from "../types/BookInterface";
 
 const ManageBooking = () => {
 
-  const [borrowed, setBorrowed] = useState<any>([]);
+  const [borrowed, setBorrowed] = useState<BookInterface[]>([]);
   const [isPending, setIsPending] = useState<Boolean>(true);
   const [cancelPressed, setCancelPressed] = useState<Boolean>(false);
 
-  const [notBorrowed, setNotBorrowed] = useState<any>([]);
-  const [subscribers, setSubscribers] = useState<any>([]);
+  const [notBorrowed, setNotBorrowed] = useState<BookInterface[]>([]);
+  const [subscribers, setSubscribers] = useState<Subscriber[]>([]);
   //for dropdown
   const selectedSubs = useRef('');
   const selectedBook = useRef('');
@@ -46,7 +48,7 @@ const ManageBooking = () => {
       try {
         const { data: response } = await axios.get("http://localhost:8080/subscriber");
         setSubscribers(response);
-        console.log(response);
+        console.log("her",response);
       } catch (error:any) {
         console.error(error.message);
       }
@@ -71,7 +73,7 @@ const ManageBooking = () => {
           duration: 3000,
           isClosable: true,
         });
-        const newBorrowed = borrowed.filter((borrowItem:any) => borrowItem.isbn != item.isbn)
+        const newBorrowed = borrowed.filter((borrowItem:BookInterface) => borrowItem.isbn != item.isbn)
         setBorrowed(newBorrowed);
         setNotBorrowed([...notBorrowed,item]);
 
@@ -141,7 +143,7 @@ const ManageBooking = () => {
             <div className="row">
               <div className="col-md-4">
                 <Select placeholder='select subscriber' onChange={(e) => { selectedSubs.current = e.target.value; }}>
-                  {subscribers.map((item:any) => (//here also
+                  {subscribers && subscribers.map((item:Subscriber) => (//here also
                     <option key={item.cin} value={item.cin}>{item.fname} {item.lname}</option>
                   ))}
 
@@ -150,7 +152,7 @@ const ManageBooking = () => {
 
               <div className="col-md-4">
                 <Select placeholder='select book' onChange={(e) => { selectedBook.current = e.target.value; }}>
-                  {notBorrowed.map((item:any) => (
+                  {notBorrowed.map((item:BookInterface) => (
                     <option key={item.isbn} value={item.isbn}>{item.title}</option>
                   ))}
                 </Select>
@@ -197,9 +199,9 @@ const ManageBooking = () => {
               <div className="col-6 col-md-2" />
               <div className="col-6 col-md-8">
                 {/* boucli for hne*/}
-                {borrowed.map((item:any) => (
-                  <div key={item.isbn} className="card" style={{ backgroundColor: '#326f59' }}>
-                    <div className="card-header card-header-success" style={{ backgroundColor: '#B7E4C7' }}>
+                {borrowed.map((item:any) => (   
+                  <div key={item.isbn} className="card" style={{ backgroundColor: '#326f59' }} >
+                    <div className="card-header card-header-success" style={{  backgroundColor: new Date(item.giveBack) < new Date() ? '#fdbfb5' : '#B7E4C7' }}>
                       <div className="row">
                         <div className="col-md-10">
                           <h4 className="card-title "> <b>{item.title} <span style={{ fontSize: '20px' }}>(isbn: {item.isbn} )</span></b> </h4>
